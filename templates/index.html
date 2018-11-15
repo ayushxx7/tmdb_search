@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}HOME{% endblock %}
+
+{% block content %}
+	
+    <!-- Navigation -->
+
+
+
+    <!-- Image Showcases -->
+    <section class="showcase">
+      <div class="container-fluid p-0">
+        <div class="row no-gutters">
+
+          <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('/static/img/bg-showcase-1.jpg');"></div>
+          <div class="col-lg-6 order-lg-1 my-auto showcase-text text-light bg-dark">
+            <h2 class="text-center">Your Query Returned</h2>
+            <p class="lead mb-0 text-center">
+	        {% if combined_list|length == 0 %}
+	        NOTHING YET!
+	    	{% endif %}
+	    
+	    	<table border="0">
+	    	
+	    	<!-- <ul style="list-style:none"> -->
+	        	{% for item in combined_list %}	
+	    	<tr>	
+	    		<td>
+	        		<!-- <li onclick="jsFunc(item)"> -->
+	        			{{ combined_list[item] }}
+	        		<!-- </li>  -->
+	        	</td>
+	        	<td>
+	        	<form method="POST" action="/moreDetails">
+					<input type="hidden" name="id_search" value="{{ item }}">
+					<!-- <input type="submit" value="More Details"> -->
+					<button type="submit" class="btn btn-block btn-sm btn-primary">FIND OUT MORE!</button>
+				</form>
+	        	</td>
+	    	</tr>
+	    	{% endfor %}
+
+	    	</ul>
+	    	</table>
+	    	</p>
+<!-- <form action="/forward/" method="post">
+    <button name="forwardBtn" type="submit">Forward</button>
+</form>
+<script>
+    				var dict_js = com
+  				</script>
+function jsFunc(item)
+				    	{
+				    		console.log("123");
+				    	};
+ -->
+          </div>
+        </div>
+        <div class="row no-gutters text-center text-light bg-dark">
+          <div class="col-lg-6 text-white showcase-img" style="background-image: url('/static/img/bg-showcase-2.jpg');"></div>
+          <div class="col-lg-6 my-auto showcase-text">
+            <h2>Name's right there on the sign!</h2>
+            <p class="lead mb-0">Yep, that is some good shit!</p>
+            <p class="lead mb-0">Created by Mando.</p>
+            <p class="lead mb-0">For Spoonshot Internship Test.</p>
+            
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- Icons Grid -->
+   
+
+    <!-- Footer -->
+    
+    <!-- Bootstrap core JavaScript -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/custom.js"></script>
+    
+{% endblock %}
+
+</html>

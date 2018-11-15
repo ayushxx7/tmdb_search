@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}HOME{% endblock %}
+
+{% block content %}
+<section class="showcase">
+	<div class="container-fluid p-0">
+		<div class="row no-gutters">
+	      <div class="col-lg-6 order-lg-2 text-light text-center showcase-img" style="background-image: url('{{poster_img}}');"><br><br><h1>{{ title }}</h1>
+	      </div>
+          
+          <div class="col-lg-6 order-lg-1 my-auto showcase-text bg-dark text-danger text-center " 
+          style="background-image: url('{{backdrop_img}}')">
+            
+	            <kbd style="font-size:1em">More Details about </kbd>
+	            <br>
+	            <kbd style="font-size:2em">{{ title }}</kbd>
+	            <p class="lead mb-0">
+	            <table border="1" style="border-width: 1.7em">
+		    	{% for item in detail_list %}	
+		    			<tr>	
+		    				<td style="border-width: 0.5em">
+		        				<kbd>{{ item }}</kbd>
+		        			</td>
+		        			<td style="border-width: 0.5em">
+		        				<mark>{{ detail_list[item] }}</mark>
+		        			</td>
+		    			</tr>
+		    	{% endfor %}
+		    	</table>
+		 		</p>
+          </div>
+        </div>    
+    </div>
+</section>
+
+<section class="bg-dark text-center my-auto showcase-text text-light">
+	<h1>MOVIE TRAILERS</h1>
+
+     {% for video in trailer_dict %}
+     <!-- 
+     	{{video}} : {{trailer_dict[video]}} -->
+     	<iframe width="420" height="315"
+			src="{{trailer_dict[video]}}">
+		</iframe>
+
+     {% endfor %}
+</section>
+
+<section class="showcase">
+	<div class="container-fluid p-0">
+		<div class="row no-gutters">
+	      
+          <div class="my-auto showcase-text bg-dark text-light text-center ">
+           <h1>CAST</h1>
+           <!-- {{cast_list}} -->
+           <p style="font-size:1.3em">
+           {% for i in cast_list %}
+           	{{i}} |	
+           {% endfor %}	
+	       </p>
+	       </div>
+        </div>    
+    </div>
+</section>
+
+<section class="showcase">
+	<div class="container-fluid p-0">
+		<div class="row no-gutters">
+	      
+          <div class="my-auto showcase-text text-center ">
+           <h1>CREW</h1>
+           <!-- {{cast_list}} -->
+           <p style="font-size:0.8em">
+           {% for i in crew_list %}
+           	{{i}} |	
+           {% endfor %}	
+	       </p>
+	       </div>
+        </div>    
+    </div>
+</section>
+
+<section class="showcase">
+	<div class="container-fluid p-0">
+		<div class="row no-gutters">
+	      
+          <div class="my-auto showcase-text text-light text-center "
+          style="background-color: black">
+           <h1>REVIEWS</h1>
+           <!-- {{cast_list}} -->
+           <p style="font-size:0.85em">
+           {% for i in review_list %}
+           	{{i}} <br>	<br>
+           {% endfor %}	
+	       </p>
+	       </div>
+        </div>    
+    </div>
+</section>
+
+{% endblock %}
