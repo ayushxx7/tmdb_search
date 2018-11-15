@@ -29,86 +29,42 @@ def search_by_name():
 
 	id_list = []
 	title_list = []
-	# combined_list = []
 	movie_dict = {}
 
 	print('SNO','-','TITLE')
 	if 'results' in data:
 		for i,element in enumerate(data['results']):
-			# print(i+1, '-', element['title'])
 			id_list.append(element['id'])
 			title_list.append(element['title'])
 
-			# combined_list.append(element['id'])
-			# combined_list.append(element['title'])
 
 		movie_dict = dict(zip(id_list, title_list))
 		# DICTIONARY WITH KEY AS MOVIE ID AND NAME AS VALUE
 
-		# print(movie_dict)
+	#RETURN TO LANDING PAGE ITSELF. MOVIE DICT PASSED TO HTML.
 
-
-
-	# choice = int(input("choose serial number:"))
-	# id_chosen = id_list[choice-1]
-	#RETURN TO LANDING PAGE ITSELF. 
-	
 	return render_template('index.html',combined_list=movie_dict)
-	# search_by_id(id_chosen)
+
+# FUNCTION TO MAKE 2ND API CALL. TO FETCH MORE DETAILS ABOUT A MOVIE. 
 
 @app.route('/moreDetails',methods=['POST'])
 def search_by_id():
 	API_KEY = 'c85b9d37d442d740f448c23fc53cc90f'
-	user_query = request.form['id_search']
-	print(user_query)
+	user_query = request.form['id_search'] # TAKES FROM THE HIDDEN INPUT BOX IN TABLE IN INDEX PAGE
 	param_dict = {'api_key':API_KEY,'append_to_response':"credits,reviews,videos,change_keys"}
+	# APPEND TO RESPONSE IS USED TO GET EXTRA DETAILS USING MOVIE ID.
+	# CREDITS HAS CAST AND CREW
+	# VIDEOS HAS TRAILERS
+
 	response = requests.get('https://api.themoviedb.org/3/movie/'+user_query,params = param_dict)
-	data = response.json()
-	print(data)
-
-	for i in data:
-		print(i)
-
-	print("\nTITLE:",data['title'],"\nORIGINAL TITLE",data['original_title'],
-		"\noriginal language:",data['original_language'],"\nRELEASE INFO:",data['release_date'],
-		"\nOVERVIEW:",data['overview'],'\nREVENUE:',data['revenue'], "\nRUNTIME:",data['runtime'],
-		"\nTrailers:",data['videos']
-		)
-
-	detail_list = []
+	data = response.json() # RESPONSE CONVERTED TO JSON 
 
 	detail_dict = {}
 
 	title = data['title']
-
-
-	detail_list.append('TITLE:')
-	detail_list.append(data['title'])
-	detail_list.append('ORIGINAL TITLE:')
-	detail_list.append(data['original_title'])
-	detail_list.append('RELEASE INFO:')
-	detail_list.append(data['release_date'])
-	detail_list.append('OVERVIEW:')
-	detail_list.append(data['overview'])
-	detail_list.append('REVENUE:')
-	detail_list.append(data['revenue'])
-	detail_list.append('RUNTIME:')
-	detail_list.append(data['runtime'])
-	
-
-
-
-
-	# print("\nTITLE:",data['title'],"\nORIGINAL TITLE",data['original_title'],
-	# 		"\noriginal language:",data['original_language'],"\nRELEASE INFO:",data['release_date'],
-	# 		"\nOVERVIEW:",data['overview'],"\nGENRES:",data['genres'], '\nREVENUE:',data['revenue'], "\nRUNTIME:",data['runtime'],
-	# 		"\nREVIEWS:",data["reviews"],"\nCredits:",data['credits'])
+	# GENRE LIST TO DISPLAY IN BASIC INFO TABLE
 	genre_list = []
-	print('\nGenres =>')
-	detail_list.append('Genres:')
 	for i in data['genres']:
-		print(i['name'])
-		detail_list.append(i['name'])
 		genre_list.append(i['name'])
 
 
@@ -120,64 +76,55 @@ def search_by_id():
 	detail_dict['RUNTIME'] = str(data['runtime'])+' Min'
 	detail_dict['REVENUE'] = '$'+str(data['revenue'])
 
-	cast_list = []
-	
+	# DETAIL DICTIONARY WITH KEY AS LEFT COLUMN NAMES TO BE SHOWN IN TABLE
+	# AND VALUES TO BE PASSED VIA API TO HTML
 
-	detail_list.append('Cast:')	
-	print('\nCast =>')
+	# PUSH DATA IN CAST SECTION 
+
+	cast_list = []
 	for i in data['credits']['cast']:
-		print(i['name'])
-		detail_list.append(i['name'])
 		cast_list.append(i['name'])
-	# cast_dict = {}
-	# cast_dict['CAST'] = ", ".join(genre_list)
-	# crew_list = []
+
+	# PUSH DATA IN CREW SECTION 
+
 	crew_list = []
-	detail_list.append('crew:')	
-	print('\nCrew =>')
 	for i in data['credits']['crew']:
-		print(i['name'])
-		detail_list.append(i['name'])
 		crew_list.append(i['name'])
 
+	# PUSH DATA TO REVIEW SECTION
 	review_list = []
-	detail_list.append('reviews:')
-	print('\nREVIEWS =>')
 	for i in data['reviews']['results']:
-		print('\n',i['content'],'\nReviewed by', i['author'])
-		detail_list.append(i['content'])
-		detail_list.append('Reviewed By')
-		detail_list.append(i['author'])
 
 		review_list.append(i['content'] + ' <= || reviewed by || =>' + i['author'])
-		# review_list.append()
-		# review_list.append()
+
+	# PUSH TRAILER DICTIONARY WHICH HAS TRAILER NAME AND LINK TO EMBED VIDEOS IN HTML
 
 	trailer_dict = {}
-	detail_list.append('TRAILER LINKS')
-	print("\nTRAILER LINKS =>")
 	for i in data['videos']['results']:
-		print(i['name'],':',"https://www.youtube.com/watch?v="+i['key'])
-		detail_list.append(i['name'])
-		link = "https://www.youtube.com/embed/"+i['key'] # ?v=
-		detail_list.append(link)
+		link = "https://www.youtube.com/embed/"+i['key'] 
 		trailer_dict[i['name']] = link
-		# detail_list()
+
+	# SOME OBSCURE MOVIES HAVE NO BACK DROPS
+
 	if data['backdrop_path'] == None:
 		backdrop_img = '/static/img/backdrop_not_found.jpg'
 	else:
 		backdrop_img = 'https://image.tmdb.org/t/p/w1280/'+data['backdrop_path']
 	
 	poster_img = 'https://image.tmdb.org/t/p/original/'+data['poster_path']
-	print("\nImage Links")
-	print("BACKDROP PATH:",data['backdrop_path'])
-	# print('Backdrop Image Link:','https://image.tmdb.org/t/p/w300/'+data['backdrop_path'])
-	print("POSTER PATH:",data['poster_path'])
-	print('Poster Image Link:','https://image.tmdb.org/t/p/w92/'+data['poster_path'])
+
+	# PAGE RENDERED IS MOREDETAILS.HTML
+	# PASSED VALUES ARE TITLE, DETAIL DICTIONARY, BACKDROP IMAGE, POSTER IMAGE, 
+	# CAST LIST, CREW LIST, REVIEW LIST AND TRAILER DICTIONARY
+	# FOR JINJA RENDERING ON WEBPAGE
 
 	return render_template('moreDetails.html',title = title, detail_list=detail_dict, 
 		backdrop_img=backdrop_img, poster_img=poster_img, cast_list = cast_list,
 		crew_list = crew_list, review_list = review_list, trailer_dict = trailer_dict
 		)
+
+# CALL IN COMMAND PROMPT VIA COMMAND: py hello.py
+# server starts running on localhost:5000
+
 if __name__ == "__main__":
 	app.run(debug=True)
