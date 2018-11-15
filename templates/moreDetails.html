@@ -1,21 +1,28 @@
 {% extends "base.html" %}
-{% block title %}HOME{% endblock %}
+<!-- EXTEND BASE HTML FILE FOR BASE HEADER AND FOOTER -->
+{% block title %}DETAILS{% endblock %}
+<!-- ADD TITLE TO BASE TITLE -->
 
 {% block content %}
+	<!-- FILLING BLOCK CONTENT WHICH IS LEFT EMPTY IN BASE HTML -->
+    <!-- DIVIDED CONTENT INTO DIFFERENT SECTIONS. USING BOOTSTRAP FOR CLEAN UI. -->
 <section class="showcase">
 	<div class="container-fluid p-0">
 		<div class="row no-gutters">
-	      <div class="col-lg-6 order-lg-2 text-light text-center showcase-img" style="background-image: url('{{poster_img}}');"><br><br><h1>{{ title }}</h1>
+	      <div class="col-lg-6 order-lg-2 text-light text-center showcase-img" style="background-image: url('{{poster_img}}');"><br><br><h1>{{ title }}</h1> 
+	      	<!-- USES JINJA POSTER IMAGE FOR BACKGROUND AND TITLE FOR SHOWING TITLE ON PAGE -->
 	      </div>
           
           <div class="col-lg-6 order-lg-1 my-auto showcase-text bg-dark text-danger text-center " 
           style="background-image: url('{{backdrop_img}}')">
-            
+            <!-- JINJA BACDROP USED ON WHICH A NEAT TABLE DISPLAYS THE MAIN INFO ABOUT MOVIE -->
 	            <kbd style="font-size:1em">More Details about </kbd>
 	            <br>
 	            <kbd style="font-size:2em">{{ title }}</kbd>
 	            <p class="lead mb-0">
 	            <table border="1" style="border-width: 1.7em">
+	            	<!-- FOR LOOP FOR POPULATING TABLE 
+	            		DETAIL DICTIONARY BEING PASSED FROM FLASK -->
 		    	{% for item in detail_list %}	
 		    			<tr>	
 		    				<td style="border-width: 0.5em">
@@ -33,27 +40,29 @@
     </div>
 </section>
 
+<!-- SECTION FOR TRAILERS -->
 <section class="bg-dark text-center my-auto showcase-text text-light">
 	<h1>MOVIE TRAILERS</h1>
-
+<!-- FOR LOOP FOR TRAILER LINKS, TRAILER DICT COMING FROM FLASK APP -->
      {% for video in trailer_dict %}
-     <!-- 
-     	{{video}} : {{trailer_dict[video]}} -->
+     <!-- USING IFRAME TO EMBED VIDEOS IN THE WEBPAGE -->
      	<iframe width="420" height="315"
 			src="{{trailer_dict[video]}}">
+			<!-- JINJA LOGIC FOR VIDEO LINKS -->
 		</iframe>
 
      {% endfor %}
 </section>
 
+<!-- CAST SECTION -->
 <section class="showcase">
 	<div class="container-fluid p-0">
 		<div class="row no-gutters">
 	      
           <div class="my-auto showcase-text bg-dark text-light text-center ">
            <h1>CAST</h1>
-           <!-- {{cast_list}} -->
            <p style="font-size:1.3em">
+           <!-- CLEAN WAY TO NAME ALL THE CAST MEMBERS -->
            {% for i in cast_list %}
            	{{i}} |	
            {% endfor %}	
@@ -63,14 +72,16 @@
     </div>
 </section>
 
+<!-- CREW SECTION -->
+
 <section class="showcase">
 	<div class="container-fluid p-0">
 		<div class="row no-gutters">
 	      
           <div class="my-auto showcase-text text-center ">
            <h1>CREW</h1>
-           <!-- {{cast_list}} -->
            <p style="font-size:0.8em">
+           	<!-- CLEAN WAY TO LIST OUT ALL CREW MEMBERS -->
            {% for i in crew_list %}
            	{{i}} |	
            {% endfor %}	
@@ -80,6 +91,7 @@
     </div>
 </section>
 
+<!-- REVIEW SECTION -->
 <section class="showcase">
 	<div class="container-fluid p-0">
 		<div class="row no-gutters">
@@ -87,8 +99,8 @@
           <div class="my-auto showcase-text text-light text-center "
           style="background-color: black">
            <h1>REVIEWS</h1>
-           <!-- {{cast_list}} -->
            <p style="font-size:0.85em">
+           <!-- JINJA LOGIC TO SHOW REVIEW AND NAME OF AUTHOR, VALUES PASSED BY FLASK -->
            {% for i in review_list %}
            	{{i}} <br>	<br>
            {% endfor %}	

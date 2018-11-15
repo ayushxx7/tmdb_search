@@ -1,59 +1,58 @@
-from flask import Flask, render_template, request
-import requests
+# MAIN APP THAT USES FLASK FOR BACKEND
+# CLEAN, SIMPLE FRAMEWORK TO DO ALL THAT IS REQUIRED.
+# NOTHING MORE, NOTHING LESS.
 
+from flask import Flask, render_template, request # FLASK FILES
+import requests # FOR API CALLS
+
+# APP NAME = app
 app = Flask(__name__)
 
-@app.route('/movie',methods=["POST"])
-def movie():
-	search_query = request.form['search_movie']
-	print(search_query)
-	return render_template('movie.html')
 
-
+# ROOT URL THAT RETURNS INDEX HTML
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# FUNCTION TO MAKE FIRST API CALL TO FETCH MOVIE NAMES MATCHING KEYWORD. 
 
 @app.route('/script',methods=['POST'])
 def search_by_name():
 
 	API_KEY = 'c85b9d37d442d740f448c23fc53cc90f'
-	user_query = request.form['user_search']
-	param_dict = {'api_key':API_KEY,'query':user_query}
-	# response = requests.get('https://api.themoviedb.org/3/movie/157336?api_key=c85b9d37d442d740f448c23fc53cc90f&append_to_response=credits,reviews')
+	user_query = request.form['user_search'] # TAKES IN USER INPUT FOR MOVIE NAME
+	param_dict = {'api_key':API_KEY,'query':user_query} #DICTIONARY TO PASS AS PARAMETER
 	response2 = requests.get('https://api.themoviedb.org/3/search/movie',params=param_dict)
-	# print(response2.url)
+	# API CALL
 
-	# print(response2.content)
+	data = response2.json() #CONVERT RESPONSE TO JSON
 
-	# print(response.content)
-	data = response2.json()
-
-	# print(data['title'],data['credits'])
 	id_list = []
 	title_list = []
-	combined_list = []
+	# combined_list = []
 	movie_dict = {}
+
 	print('SNO','-','TITLE')
 	if 'results' in data:
 		for i,element in enumerate(data['results']):
-			print(i+1, '-', element['title'])
+			# print(i+1, '-', element['title'])
 			id_list.append(element['id'])
 			title_list.append(element['title'])
 
-			combined_list.append(element['id'])
-			combined_list.append(element['title'])
+			# combined_list.append(element['id'])
+			# combined_list.append(element['title'])
 
 		movie_dict = dict(zip(id_list, title_list))
+		# DICTIONARY WITH KEY AS MOVIE ID AND NAME AS VALUE
 
-		print(movie_dict)
+		# print(movie_dict)
 
 
 
 	# choice = int(input("choose serial number:"))
 	# id_chosen = id_list[choice-1]
-
+	#RETURN TO LANDING PAGE ITSELF. 
+	
 	return render_template('index.html',combined_list=movie_dict)
 	# search_by_id(id_chosen)
 

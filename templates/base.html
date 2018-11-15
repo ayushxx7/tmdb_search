@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!-- BASE HTML FILE WHICH WILL BE EXTENDED BY OTHER TEMPLATES -->
   <head>
     {% block head %}
     <meta charset="utf-8">
@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block title %}{% endblock %} MOVIE SEARCH</title>{% endblock %}
+    <title>{% block title %}{% endblock %} MOVIE SEARCH</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -20,6 +20,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/static/css/landing-page.min.css" rel="stylesheet">
+    {% endblock %}
 
   </head>
 
