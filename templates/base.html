@@ -25,13 +25,14 @@
   </head>
 
 <body>
-
+<!-- DECIDED TO KEEP THE SEARCH BAR IN BASE HTML ITSELF BECAUSE IT IS BETTER TO HAVE IT ON ALL PAGES.
+    SO THAT USER WON'T HAVE TO GO TO HOME PAGE TO SEARCH FOR MOVIE DETAILS OF SOME OTHER MOVIE -->
 <div id="content">
-            <nav class="navbar navbar-light bg-light static-top">
-      <div class="container">
+    <nav class="navbar navbar-light bg-light static-top">
+        <div class="container">
         <a class="navbar-brand" href="">MOVIE SEARCH PRO</a>
         <a class="btn btn-primary" href="">POWERED BY TMDB</a>
-      </div>
+        </div>
     </nav>
             <header class="masthead text-white text-center">
       <div class="overlay"></div>
@@ -46,6 +47,9 @@
                 <div class="col-12 col-md-9 mb-2 mb-md-0">
                     
                   <input type="text" class="form-control form-control-lg" placeholder="Enter your search query here..." name="user_search">
+                  <!-- FIRST API REQUEST IS HAPPENING IN THIS FORM.
+                  RESULT IS BEING DISPLAYED INSIDE THE PAGE ITSELF.
+                  NEED TO SCROLL DOWN FOR NOW AFTER CLICKING BUTTON. -->
 
                 </div>
                 <div class="col-12 col-md-3">
@@ -61,11 +65,12 @@
 {% block content %}
 
 
-
+<!-- EMPTY TO BE IMPLEMENTED BY CHILD TEMPLATES -->
 
 {% endblock %}
 </div>
-
+<!-- FOOTER WILL BE PRESENT IN ALL TEMPLATES 
+RIGHT NOW DOES NOT REDIRECT TO ANYWHERE -->
 
     <div id="footer">
         {% block footer %}
